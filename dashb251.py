@@ -2,13 +2,12 @@ import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
 import plotly.express as px
-import numpy as np
 
 st.set_page_config(page_title = "Dasboard",
-                   layout='wide'   )
+                   layout='wide')
 
 st.sidebar.header('Sélectionnez les axes du graphe')
-df = pd.read_excel('txETRk.xlsx', sheet_name='dim')
+df = pd.read_excel('txETRl.xlsx', sheet_name='dim')
 
 regions = df["region"].unique()
 
