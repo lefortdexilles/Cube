@@ -45,7 +45,7 @@ st.title("Pays dont les montants de T3 et de T5 consommés en 4 ans sont inféri
 st.write("Fixer dans les deux sliders ci-dessous le montant total T3 et T5 consommés en 4 ans pour un pays")
 
 selected_value_T3 = st.slider(
-    label="Le montant de T3 consommé est au maximum de:",
+    label="Le montant de T3 (fonctionnement) consommé est au maximum de:",
     min_value=0,
     max_value=53600000,
     value=dfa['T3'].iloc[0],
@@ -53,7 +53,7 @@ selected_value_T3 = st.slider(
 )
 
 selected_value_T5 = st.slider(
-    label="Le montant de T5 consommé est au maximum de:",
+    label="Le montant de T5 (investissement) consommé est au maximum de:",
     min_value=0,
     max_value=17000000,
     value=dfa['T5'].iloc[0],
@@ -71,7 +71,7 @@ dfy = pd.concat([dmc_T3[dmc_T3['country'].isin(common)],dmc_T5[dmc_T5['country']
 dfy = dfy[['country', 'T3', 'T5']]
 result = pd.merge(dfy, dfx, on = 'country', how='left')
 result = result.fillna(0)
-result['sum'] = result['T3'] + result['T5']
+result['total T3+T5'] = result['T3'] + result['T5']
 
-fig = px.choropleth(result, locations='iso', color='sum', hover_name='country', color_continuous_scale='viridis')
+fig = px.choropleth(result, locations='iso', color='total T3+T5', hover_name='country', color_continuous_scale='viridis')
 st.plotly_chart(fig)
