@@ -31,3 +31,46 @@ fig.update_layout(
 
 st.plotly_chart(fig)
 
+st.markdown("---")
+
+dfx = pd.read_excel('codiso2.xlsx', sheet_name='Feuil1')
+dfa = pd.read_excel('slidmap2.xlsx', sheet_name='Feuil1')
+dfa = dfa.fillna(0)
+dfa['T3'] = dfa['T3'].astype(int)
+dfa['T5'] = dfa['T5'].astype(int)
+
+st.title("Pays dont les montants de T3 et de T5 consommés en 4 ans sont inférieurs/égaux aux montants des curseurs infra")
+
+st.write("Fixer dans les deux sliders ci-dessous le montant total T3 et T5 consommés en 4 ans pour un pays")
+
+selected_value_T3 = st.slider(
+    label="Le montant de T3 consommé est au maximum de:",
+    min_value=0,
+    max_value=53600000,
+    value=dfa['T3'].iloc[0],
+    step=2500000
+)
+
+selected_value_T5 = st.slider(
+    label="Le montant de T5 consommé est au maximum de:",
+    min_value=0,
+    max_value=17000000,
+    value=dfa['T5'].iloc[0],
+    step=2500000
+)
+
+value_T3 = np.int32(selected_value_T3)+1
+value_T5 = np.int32(selected_value_T5)+1
+
+dmc_T3 = dfa.loc[dfa['T3']<value_T3]
+dmc_T5 = dfa.loc[dfa['T5']<value_T5]
+common = set(dmc_T3['country']).intersection(dmc_T5['country'])
+dfy = pd.concat([dmc_T3[dmc_T3['country'].isin(common)],dmc_T5[dmc_T5['country'].isin(common)]])
+
+dfy = dfy[['country', 'T3', 'T5']]
+result = pd.merge(dfy, dfx, on = 'country', how='left')
+result = result.fillna(0)
+result['sum'] = result['T3'] + result['T5']
+
+fig = px.choropleth(result, locations='iso', color='sum', hover_name='country', color_continuous_scale='viridis')
+st.plotly_chart(fig)
