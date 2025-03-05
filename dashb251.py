@@ -47,7 +47,7 @@ st.write("Fixer dans les deux sliders ci-dessous le montant total T3 et T5 conso
 selected_value_T3 = st.slider(
     label="Le montant de T3 (fonctionnement) consommé est au maximum de:",
     min_value=0,
-    max_value=53600000,
+    max_value=53630000,
     value=dfa['T3'].iloc[0],
     step=2500000
 )
