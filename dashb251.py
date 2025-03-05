@@ -8,6 +8,7 @@ st.set_page_config(page_title = "Dasboard",
 
 st.sidebar.header('Sélectionnez les axes du graphe')
 df = pd.read_excel('txETRl.xlsx', sheet_name='dim')
+df.fillna(0, inplace=True)
 
 regions = df["region"].unique()
 
